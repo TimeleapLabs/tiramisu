@@ -16,6 +16,7 @@ import {
   TiramisuCstChildren,
   ParameterCstChildren,
   ArrayItemCstChildren,
+  StringLiteralCstChildren,
 } from "./types/parser.js";
 
 import {
@@ -189,5 +190,11 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
         this.imageOrVisit(node)
       )
     );
+  }
+
+  stringLiteral(ctx: StringLiteralCstChildren): Node {
+    return new PureText([
+      ctx.StringLiteral.map((s) => s.image.slice(1, -1)).join(""),
+    ]);
   }
 }

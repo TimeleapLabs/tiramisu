@@ -53,6 +53,15 @@ export type TextCstChildren = {
   pureText?: PureTextCstNode[];
 };
 
+export interface StringLiteralCstNode extends CstNode {
+  name: "stringLiteral";
+  children: StringLiteralCstChildren;
+}
+
+export type StringLiteralCstChildren = {
+  StringLiteral: IToken[];
+};
+
 export interface PureTextValueCstNode extends CstNode {
   name: "pureTextValue";
   children: PureTextValueCstChildren;
@@ -60,6 +69,7 @@ export interface PureTextValueCstNode extends CstNode {
 
 export type PureTextValueCstChildren = {
   Text?: IToken[];
+  stringLiteral?: StringLiteralCstNode[];
   anyWhite?: AnyWhiteCstNode[];
 };
 
@@ -161,6 +171,7 @@ export interface ICstNodeVisitor<IN, OUT> extends ICstVisitor<IN, OUT> {
   pureText(children: PureTextCstChildren, param?: IN): OUT;
   paragraph(children: ParagraphCstChildren, param?: IN): OUT;
   text(children: TextCstChildren, param?: IN): OUT;
+  stringLiteral(children: StringLiteralCstChildren, param?: IN): OUT;
   pureTextValue(children: PureTextValueCstChildren, param?: IN): OUT;
   textValue(children: TextValueCstChildren, param?: IN): OUT;
   paragraphValue(children: ParagraphValueCstChildren, param?: IN): OUT;

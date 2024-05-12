@@ -20,6 +20,12 @@ const Text = createToken({
   pattern: /(\\[\\{}[\],=]|[^\s{}[\],=])+/,
 });
 
+const StringLiteral = createToken({
+  name: "StringLiteral",
+  pattern: /"(?:[^"\\]|\\.)*"/,
+  line_breaks: true,
+});
+
 const WhiteSpace = createToken({
   name: "WhiteSpace",
   pattern: /[^\S\r\n]+/,
@@ -44,6 +50,7 @@ export const TiramisuTokens = [
   RSquare,
   Comma,
   Equal,
+  StringLiteral,
   Text,
   WhiteSpace,
   MultiLineBreak,
@@ -114,6 +121,7 @@ export {
   RSquare,
   Comma,
   Equal,
+  StringLiteral,
   Text,
   WhiteSpace,
   MultiLineBreak,
@@ -121,4 +129,4 @@ export {
   Function,
 };
 
-const treatAsText = ["Comma", "Equal", "LSquare", "RSquare"];
+const treatAsText = ["Comma", "Equal", "LSquare", "RSquare", "StringLiteral"];

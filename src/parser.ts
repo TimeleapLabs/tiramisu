@@ -8,6 +8,7 @@ import {
   RSquare,
   Comma,
   Equal,
+  StringLiteral,
   Text,
   WhiteSpace,
   LineBreak,
@@ -61,10 +62,15 @@ class TiramisuParser extends CstParser {
     });
   });
 
+  public stringLiteral = this.RULE("stringLiteral", () => {
+    this.CONSUME(StringLiteral);
+  });
+
   public pureTextValue = this.RULE("pureTextValue", () => {
     this.AT_LEAST_ONE(() => {
       this.OR([
         { ALT: () => this.CONSUME(Text) },
+        { ALT: () => this.SUBRULE(this.stringLiteral) },
         { ALT: () => this.SUBRULE(this.anyWhite) },
       ]);
     });

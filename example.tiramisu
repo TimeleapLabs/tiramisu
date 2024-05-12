@@ -14,8 +14,11 @@ list {
   item = three
 }
 
-or simply:
+Or simply:
 list { one, two, three }
+
+Use "string literals" to escape special characters:
+list { one, "two, three" }
 
 You can make ordered lists like this:
 list { type = ordered, one, two, three }

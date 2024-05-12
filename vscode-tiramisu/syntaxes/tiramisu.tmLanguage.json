@@ -26,12 +26,25 @@
         },
         {
           "include": "#link"
+        },
+        {
+          "include": "#string"
         }
       ]
     },
     "link": {
       "match": "(https?|ftp)://[^ \\]\\[]+",
       "name": "markup.underline.link"
+    },
+    "string": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.tiramisu",
+      "patterns": [
+        {
+          "match": "\\\\."
+        }
+      ]
     },
     "functions": {
       "patterns": [
