@@ -1,0 +1,26 @@
+{
+  "name": "@timeleap/tiramisu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "lint": "tslint -p tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "typegen": "node scripts/typegen.js",
+    "diagram": "node scripts/diagram.js",
+    "artifacts": "npm run typegen && npm run diagram"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "chevrotain": "^11.0.3"
+  },
+  "type": "module"
+}

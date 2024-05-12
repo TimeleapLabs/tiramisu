@@ -1,0 +1,39 @@
+{
+  "name": "vscode-tiramisu",
+  "displayName": "vscode-tiramisu",
+  "description": "Tiramisu for VSCode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.43.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TimeleapLabs/tiramisu"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "tiramisu",
+        "aliases": [
+          "Tiramisu",
+          "tiramisu"
+        ],
+        "extensions": [
+          ".tiramisu"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "tiramisu",
+        "scopeName": "source.tiramisu",
+        "path": "./syntaxes/tiramisu.tmLanguage.json"
+      }
+    ]
+  },
+  "license": "Apache-2.0"
+}
