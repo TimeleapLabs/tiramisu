@@ -1,5 +1,9 @@
+export interface TranslateMap {
+  [key: string]: (node: Node) => string;
+}
+
 export interface Node {
-  toString(): string;
+  toString(map?: TranslateMap): string;
 }
 
 export class FunctionCall {
@@ -11,7 +15,11 @@ export class FunctionCall {
     this.parameters = parameters;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && this.functionName in map) {
+      return map[this.functionName](this);
+    }
+
     return `${this.functionName}(${this.parameters.toString()})`;
   }
 }
@@ -25,7 +33,11 @@ export class NamedParameter implements Node {
     this.value = value;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "namedParameter" in map) {
+      return map[this.name](this);
+    }
+
     return `${this.name}=${this.value.toString()}`;
   }
 }
@@ -37,7 +49,10 @@ export class ArrayValue implements Node {
     this.values = values;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "arrayValue" in map) {
+      return map["arrayValue"](this);
+    }
     return "[" + this.values.map((value) => value.toString()).join(", ") + "]";
   }
 }
@@ -49,7 +64,10 @@ export class ArrayItem implements Node {
     this.value = value;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "arrayItem" in map) {
+      return map["arrayItem"](this);
+    }
     return this.value.map((value) => value.toString()).join("");
   }
 }
@@ -61,7 +79,10 @@ export class PureText implements Node {
     this.shards = shards;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "pureText" in map) {
+      return map["pureText"](this);
+    }
     return this.shards.join("");
   }
 }
@@ -73,7 +94,10 @@ export class MixedText implements Node {
     this.shards = shards;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "mixedText" in map) {
+      return map["mixedText"](this);
+    }
     return this.shards.map((shard) => shard.toString()).join("");
   }
 }
@@ -85,7 +109,10 @@ export class Paragraph implements Node {
     this.children = children;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "paragraph" in map) {
+      return map["paragraph"](this);
+    }
     return this.children.map((child) => child.toString()).join("");
   }
 }
@@ -97,7 +124,10 @@ export class Parameter implements Node {
     this.value = value;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "parameter" in map) {
+      return map["parameter"](this);
+    }
     return this.value.map((value) => value.toString()).join("");
   }
 }
@@ -109,7 +139,10 @@ export class Parameters implements Node {
     this.parameters = parameters;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "parameters" in map) {
+      return map["parameters"](this);
+    }
     return (
       "[" +
       this.parameters.map((parameter) => parameter.toString()).join(", ") +
@@ -125,7 +158,10 @@ export class Tiramisu implements Node {
     this.children = children;
   }
 
-  toString(): string {
+  toString(map?: TranslateMap): string {
+    if (map && "tiramisu" in map) {
+      return map["tiramisu"](this);
+    }
     return this.children.map((child) => child.toString()).join("");
   }
 }
