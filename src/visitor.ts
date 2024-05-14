@@ -116,7 +116,7 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
       ]);
     }
 
-    const parameters = ctx.parameters ? this.visit(ctx.parameters) : {};
+    const parameters = ctx.parameters ? this.visit(ctx.parameters) : [];
     return new FunctionCall(functionName, parameters);
   }
 
@@ -177,19 +177,21 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
   }
 
   paragraph(ctx: ParagraphCstChildren): Node {
-    return new Paragraph(
-      this.flattenAndSort<CstNode | IToken>(ctx).map((node) =>
-        this.imageOrVisit(node)
-      )
+    const children = this.flattenAndSort<CstNode | IToken>(ctx).map((node) =>
+      this.imageOrVisit(node)
     );
+    return ctx.MultiLineBreak
+      ? new Paragraph(children)
+      : new MixedText(children);
   }
 
   paragraphValue(ctx: ParagraphValueCstChildren): Node {
-    return new Paragraph(
-      this.flattenAndSort<CstNode | IToken>(ctx).map((node) =>
-        this.imageOrVisit(node)
-      )
+    const children = this.flattenAndSort<CstNode | IToken>(ctx).map((node) =>
+      this.imageOrVisit(node)
     );
+    return ctx.MultiLineBreak
+      ? new Paragraph(children)
+      : new MixedText(children);
   }
 
   stringLiteral(ctx: StringLiteralCstChildren): Node {

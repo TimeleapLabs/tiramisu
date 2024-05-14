@@ -8,10 +8,10 @@ export interface Node {
 
 export class FunctionCall {
   functionName: string = "";
-  parameters: Node[] = [];
+  parameters: Parameters;
 
-  constructor(functionName: string, parameters: Node[]) {
-    this.functionName = functionName;
+  constructor(functionName: string, parameters: Parameters) {
+    this.functionName = functionName.trim();
     this.parameters = parameters;
   }
 
@@ -20,7 +20,7 @@ export class FunctionCall {
       return map[this.functionName](this);
     }
 
-    return `${this.functionName}(${this.parameters.toString()})`;
+    return `${this.functionName}(${this.parameters.toString(map)})`;
   }
 }
 
@@ -38,7 +38,7 @@ export class NamedParameter implements Node {
       return map[this.name](this);
     }
 
-    return `${this.name}=${this.value.toString()}`;
+    return `${this.name}=${this.value.toString(map)}`;
   }
 }
 
@@ -53,7 +53,9 @@ export class ArrayValue implements Node {
     if (map && "arrayValue" in map) {
       return map["arrayValue"](this);
     }
-    return "[" + this.values.map((value) => value.toString()).join(", ") + "]";
+    return (
+      "[" + this.values.map((value) => value.toString(map)).join(", ") + "]"
+    );
   }
 }
 
@@ -68,7 +70,7 @@ export class ArrayItem implements Node {
     if (map && "arrayItem" in map) {
       return map["arrayItem"](this);
     }
-    return this.value.map((value) => value.toString()).join("");
+    return this.value.map((value) => value.toString(map)).join("");
   }
 }
 
@@ -98,7 +100,7 @@ export class MixedText implements Node {
     if (map && "mixedText" in map) {
       return map["mixedText"](this);
     }
-    return this.shards.map((shard) => shard.toString()).join("");
+    return this.shards.map((shard) => shard.toString(map)).join("");
   }
 }
 
@@ -113,7 +115,7 @@ export class Paragraph implements Node {
     if (map && "paragraph" in map) {
       return map["paragraph"](this);
     }
-    return this.children.map((child) => child.toString()).join("");
+    return this.children.map((child) => child.toString(map)).join("");
   }
 }
 
@@ -128,7 +130,7 @@ export class Parameter implements Node {
     if (map && "parameter" in map) {
       return map["parameter"](this);
     }
-    return this.value.map((value) => value.toString()).join("");
+    return this.value.map((value) => value.toString(map)).join("");
   }
 }
 
@@ -145,7 +147,7 @@ export class Parameters implements Node {
     }
     return (
       "[" +
-      this.parameters.map((parameter) => parameter.toString()).join(", ") +
+      this.parameters.map((parameter) => parameter.toString(map)).join(", ") +
       "]"
     );
   }
@@ -162,6 +164,6 @@ export class Tiramisu implements Node {
     if (map && "tiramisu" in map) {
       return map["tiramisu"](this);
     }
-    return this.children.map((child) => child.toString()).join("");
+    return this.children.map((child) => child.toString(map)).join("");
   }
 }
