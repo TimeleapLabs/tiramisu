@@ -6,14 +6,14 @@ export const compile = (src: string) => {
   const lexResult = TiramisuLexerInstance.tokenize(src);
 
   if (lexResult.errors.length > 0) {
-    throw Error(lexResult.errors[0].message);
+    throw lexResult.errors[0];
   }
 
   TiramisuParserInstance.input = lexResult.tokens;
   const cst = TiramisuParserInstance.tiramisu();
 
   if (TiramisuParserInstance.errors.length > 0) {
-    throw Error(TiramisuParserInstance.errors[0].message);
+    throw TiramisuParserInstance.errors[0];
   }
 
   const TiramisuVisitorInstance = new TiramisuVisitor(src);
