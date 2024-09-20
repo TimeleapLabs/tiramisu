@@ -70,8 +70,12 @@ Tiramisu doesn't define ANY functions by default. The `escape` macro has the
 exact syntax as a function but it gets evaluated on parse-time. Tiramisu
 leaves the choice of functions to distributions, target language translators,
 and applications building on Tiramisu. For example, a documentation generator
-based on Tiramisu can define `bold { this is italic { bold and italic } }`,
-`chart { import { data.json } }` or `map { x = dummy, y = dummy }`
+based on Tiramisu can define
+
+- `bold { this is italic { bold and italic } }`
+- `chart { import { data.json } }`
+- `map { x = dummy, y = dummy }`
+
 functions.
 
 ### Example
