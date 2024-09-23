@@ -77,6 +77,7 @@ export class TiramisuLexer extends Lexer {
     }
 
     let curlyCount = 0;
+    let escape = false;
     let previousToken;
 
     for (const token of lexResult.tokens) {
@@ -86,10 +87,21 @@ export class TiramisuLexer extends Lexer {
           if (Function.tokenTypeIdx) {
             previousToken.tokenTypeIdx = Function.tokenTypeIdx;
           }
+          if (previousToken.image === "escape") {
+            escape = true;
+          }
         }
         curlyCount++;
       } else if (token.tokenType.name === "RCurly") {
         curlyCount--;
+        if (escape && curlyCount === 0) {
+          escape = false;
+        }
+      } else if (escape) {
+        token.tokenType = Text;
+        if (Text.tokenTypeIdx) {
+          token.tokenTypeIdx = Text.tokenTypeIdx;
+        }
       }
 
       if (curlyCount === 0 && treatAsText.includes(token.tokenType.name)) {
