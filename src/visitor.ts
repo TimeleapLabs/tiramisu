@@ -143,6 +143,7 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
   parameters(ctx: ParametersCstChildren): Node {
     const values = {
       parameter: ctx.parameter || [],
+      namedParameter: ctx.namedParameter || [],
     };
     return new Parameters(
       this.flattenAndSort<CstNode | IToken>(values).map((node) =>

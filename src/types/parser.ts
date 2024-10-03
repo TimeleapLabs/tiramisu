@@ -113,6 +113,7 @@ export interface ParametersCstNode extends CstNode {
 
 export type ParametersCstChildren = {
   parameter?: ParameterCstNode[];
+  namedParameter?: NamedParameterCstNode[];
   Comma?: IToken[];
 };
 
@@ -122,7 +123,7 @@ export interface ParameterCstNode extends CstNode {
 }
 
 export type ParameterCstChildren = {
-  anyWhite?: (AnyWhiteCstNode)[];
+  anyWhite?: AnyWhiteCstNode[];
   array?: ArrayCstNode[];
   namedParameter?: NamedParameterCstNode[];
   paragraphValue?: ParagraphValueCstNode[];
@@ -160,7 +161,7 @@ export interface ArrayItemCstNode extends CstNode {
 }
 
 export type ArrayItemCstChildren = {
-  anyWhite?: (AnyWhiteCstNode)[];
+  anyWhite?: AnyWhiteCstNode[];
   array?: ArrayCstNode[];
   paragraphValue?: ParagraphValueCstNode[];
 };
