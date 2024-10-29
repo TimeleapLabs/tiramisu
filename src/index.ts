@@ -1,5 +1,6 @@
 import { TiramisuLexerInstance } from "./lexer.js";
 import { TiramisuParserInstance } from "./parser.js";
+import { Tiramisu } from "./types/nodes.js";
 import { TiramisuVisitor } from "./visitor.js";
 
 export const compile = (src: string) => {
@@ -19,5 +20,5 @@ export const compile = (src: string) => {
   const TiramisuVisitorInstance = new TiramisuVisitor(src);
   const result = TiramisuVisitorInstance.visit(cst);
 
-  return result;
+  return result as Tiramisu;
 };

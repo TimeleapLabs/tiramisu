@@ -1,0 +1,841 @@
+Tiramisu {
+  children: [
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            FunctionCall {
+              functionName: 'heading',
+              parameters: Parameters {
+                parameters: [
+                  NamedParameter {
+                    name: 'level',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ '1' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              PureText { shards: [ 'Tiramisu', ' ' ] }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText { shards: [ 'This', ' ', 'is', ' ' ] },
+            FunctionCall {
+              functionName: 'bold',
+              parameters: Parameters {
+                parameters: [
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              FunctionCall {
+                                functionName: 'italic',
+                                parameters: Parameters {
+                                  parameters: [
+                                    Parameter {
+                                      value: [
+                                        MixedText {
+                                          shards: [
+                                            MixedText {
+                                              shards: [
+                                                PureText {
+                                                  shards: [ 'Tiramisu', ' ' ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              PureText { shards: [ ' ' ] }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            PureText {
+              shards: [
+                '.',    '\n',
+                'This', ' ',
+                'is',   ' ',
+                'a',    ' '
+              ]
+            },
+            FunctionCall {
+              functionName: 'link',
+              parameters: Parameters {
+                parameters: [
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              PureText {
+                                shards: [ 'https://example.com', ' ' ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            PureText {
+              shards: [
+                '.',    '\n',
+                'This', ' ',
+                'is',   ' ',
+                'an',   ' '
+              ]
+            },
+            FunctionCall {
+              functionName: 'image',
+              parameters: Parameters {
+                parameters: [
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              PureText {
+                                shards: [ 'https://example.com/image.png' ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  NamedParameter {
+                    name: 'alt',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              PureText {
+                                shards: [ 'Image', ' ', 'alt', ' ' ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            PureText { shards: [ '.' ] }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'This',  ' ',
+                'is',    ' ',
+                'a',     ' ',
+                'list:', '\n'
+              ]
+            },
+            FunctionCall {
+              functionName: 'list',
+              parameters: Parameters {
+                parameters: [
+                  NamedParameter {
+                    name: 'item',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'one' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  NamedParameter {
+                    name: 'item',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'two' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  NamedParameter {
+                    name: 'item',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'three', '\n' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText { shards: [ 'Or', ' ', 'simply:', '\n' ] },
+            FunctionCall {
+              functionName: 'list',
+              parameters: Parameters {
+                parameters: [
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'one' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'two' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'three', ' ' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'Use',             ' ',
+                'string literals', ' ',
+                'to',              ' ',
+                'escape',          ' ',
+                'special',         ' ',
+                'characters:',     '\n'
+              ]
+            },
+            FunctionCall {
+              functionName: 'list',
+              parameters: Parameters {
+                parameters: [
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'one' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              PureText {
+                                shards: [
+                                  PureText { shards: [ 'two, three' ] },
+                                  ' '
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'You',     ' ',
+                'can',     ' ',
+                'make',    ' ',
+                'ordered', ' ',
+                'lists',   ' ',
+                'like',    ' ',
+                'this:',   '\n'
+              ]
+            },
+            FunctionCall {
+              functionName: 'list',
+              parameters: Parameters {
+                parameters: [
+                  NamedParameter {
+                    name: 'type',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'ordered' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'one' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'two' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'three', ' ' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'Tables', ' ',
+                'are',    ' ',
+                'made',   ' ',
+                'like',   ' ',
+                'this:',  '\n'
+              ]
+            },
+            FunctionCall {
+              functionName: 'table',
+              parameters: Parameters {
+                parameters: [
+                  NamedParameter {
+                    name: 'row',
+                    value: [
+                      ArrayValue {
+                        values: [
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      PureText { shards: [ 'Price' ] }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      PureText {
+                                        shards: [
+                                          'Terms',
+                                          ' ',
+                                          'of',
+                                          ' ',
+                                          'Use',
+                                          ' '
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  NamedParameter {
+                    name: 'row',
+                    value: [
+                      ArrayValue {
+                        values: [
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      PureText { shards: [ '$10.0' ] }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      PureText {
+                                        shards: [ 'xyz', ' ' ]
+                                      },
+                                      FunctionCall {
+                                        functionName: 'link',
+                                        parameters: Parameters {
+                                          parameters: [
+                                            Parameter {
+                                              value: [
+                                                MixedText {
+                                                  shards: [
+                                                    MixedText {
+                                                      shards: [
+                                                        PureText {
+                                                          shards: [
+                                                            'https://example.com/tos',
+                                                            ' '
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      PureText { shards: [ ' ' ] }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'You',    ' ',     'can',
+                ' ',      'embed', ' ',
+                'tables', ' ',     'and',
+                ' ',      'lists', ' ',
+                'in',     ' ',     'tables:',
+                '\n'
+              ]
+            },
+            FunctionCall {
+              functionName: 'table',
+              parameters: Parameters {
+                parameters: [
+                  NamedParameter {
+                    name: 'row',
+                    value: [
+                      ArrayValue {
+                        values: [
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      PureText {
+                                        shards: [ 'Heading' ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      PureText {
+                                        shards: [ 'Heading', ' ', '2', ' ' ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  NamedParameter {
+                    name: 'row',
+                    value: [
+                      ArrayValue {
+                        values: [
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      FunctionCall {
+                                        functionName: 'table',
+                                        parameters: Parameters {
+                                          parameters: [
+                                            Parameter {
+                                              value: [
+                                                MixedText {
+                                                  shards: [
+                                                    MixedText {
+                                                      shards: [
+                                                        PureText {
+                                                          shards: [
+                                                            '...',
+                                                            ' '
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          ArrayItem {
+                            value: [
+                              ' ',
+                              MixedText {
+                                shards: [
+                                  MixedText {
+                                    shards: [
+                                      FunctionCall {
+                                        functionName: 'list',
+                                        parameters: Parameters {
+                                          parameters: [
+                                            Parameter {
+                                              value: [
+                                                MixedText {
+                                                  shards: [
+                                                    MixedText {
+                                                      shards: [
+                                                        PureText {
+                                                          shards: [
+                                                            '...',
+                                                            ' '
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      PureText { shards: [ ' ' ] }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'You',
+                ' ',
+                'can',
+                ' ',
+                'escape',
+                ' ',
+                'stuff',
+                ' ',
+                'with',
+                ' ',
+                '\\,',
+                ' ',
+                'or',
+                ' ',
+                'like',
+                ' ',
+                'this:',
+                '\n',
+                "italic { this won't be italic }"
+              ]
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'Or',
+                ' ',
+                'like',
+                ' ',
+                'this:',
+                '\n',
+                "italic { this won't be italic }"
+              ]
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    Paragraph {
+      children: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [
+                'In',
+                ' ',
+                'fact',
+                ',',
+                ' ',
+                'it',
+                ' ',
+                'works',
+                ' ',
+                'with',
+                ' ',
+                'any',
+                ' ',
+                'number',
+                ' ',
+                'of',
+                ' ',
+                'quotes:',
+                '\n',
+                "italic { this won't be italic }"
+              ]
+            }
+          ]
+        },
+        '\n\n'
+      ]
+    },
+    MixedText {
+      shards: [
+        MixedText {
+          shards: [
+            PureText {
+              shards: [ 'BEHOLD!', ' ', 'Code', ' ', 'blocks:', '\n' ]
+            },
+            FunctionCall {
+              functionName: 'code',
+              parameters: Parameters {
+                parameters: [
+                  NamedParameter {
+                    name: 'language',
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [ PureText { shards: [ 'python' ] } ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  Parameter {
+                    value: [
+                      MixedText {
+                        shards: [
+                          MixedText {
+                            shards: [
+                              PureText {
+                                shards: [
+                                  PureText {
+                                    shards: [
+                                      '\n' +
+                                        '    def hello():\n' +
+                                        '      print("world")\n' +
+                                        '  '
+                                    ]
+                                  },
+                                  '\n'
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            PureText { shards: [ '\n' ] }
+          ]
+        }
+      ]
+    }
+  ]
+}
