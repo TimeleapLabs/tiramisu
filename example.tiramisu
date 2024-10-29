@@ -1,11 +1,17 @@
+You can escape stuff with \, or like this:
+"italic { this won't be italic }"
+
+Or like this:
+"""italic { this won't be italic }"""
+
+In fact, it works with any number of quotes:
+""""italic { this won't be italic }""""
+
 heading { level = 1, Tiramisu }
 
 This is bold { italic { Tiramisu } }.
 This is a link { https://example.com }.
 This is an image { https://example.com/image.png, alt = Image alt }.
-
-You can escape stuff with \, or like this:
-escape { italic { this won't be italic } }
 
 This is a list:
 list {
@@ -38,8 +44,8 @@ table {
 BEHOLD! Code blocks:
 code {
   language = python,
-  escape {
+  """
     def hello():
       print("world")
-  }
+  """
 }

@@ -106,16 +106,6 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
 
   call(ctx: CallCstChildren): Node {
     const functionName = ctx.Function.map((fn) => fn.image).join("");
-
-    if (functionName === "escape") {
-      return new PureText([
-        this.src.slice(
-          this.getLocationOf(ctx.LCurly[0]) + 1,
-          this.getLocationOf(ctx.RCurly[0])
-        ),
-      ]);
-    }
-
     const parameters = ctx.parameters ? this.visit(ctx.parameters) : [];
     return new FunctionCall(functionName, parameters);
   }
@@ -197,7 +187,10 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
 
   stringLiteral(ctx: StringLiteralCstChildren): Node {
     return new PureText([
-      ctx.StringLiteral.map((s) => s.image.slice(1, -1)).join(""),
+      ctx.StringLiteral.map((s) => {
+        const numberOfQuotes = s.image.match(/^"*/)?.[0].length || 0;
+        return s.image.slice(numberOfQuotes, -numberOfQuotes);
+      }).join(""),
     ]);
   }
 }

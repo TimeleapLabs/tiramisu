@@ -108,8 +108,8 @@
       },
       "patterns": [
         {
-          "begin": "escape\\s*\\{",
-          "end": "\\}",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
           "patterns": [
             {
               "include": "source.js"
@@ -129,8 +129,8 @@
       },
       "patterns": [
         {
-          "begin": "escape\\s*\\{",
-          "end": "\\}",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
           "patterns": [
             {
               "include": "source.python"
@@ -150,8 +150,8 @@
       },
       "patterns": [
         {
-          "begin": "escape\\s*\\{",
-          "end": "\\}",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
           "patterns": [
             {
               "include": "source.solidity"
