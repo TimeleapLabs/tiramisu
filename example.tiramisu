@@ -1,12 +1,3 @@
-You can escape stuff with \, or like this:
-"italic { this won't be italic }"
-
-Or like this:
-"""italic { this won't be italic }"""
-
-In fact, it works with any number of quotes:
-""""italic { this won't be italic }""""
-
 heading { level = 1, Tiramisu }
 
 This is bold { italic { Tiramisu } }.
@@ -40,6 +31,15 @@ table {
   row = [ Heading, Heading 2 ],
   row = [ table { ... }, list { ... } ]
 }
+
+You can escape stuff with \, or like this:
+"italic { this won't be italic }"
+
+Or like this:
+"""italic { this won't be italic }"""
+
+In fact, it works with any number of quotes:
+""""italic { this won't be italic }""""
 
 BEHOLD! Code blocks:
 code {

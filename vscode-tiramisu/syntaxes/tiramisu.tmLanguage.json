@@ -37,12 +37,13 @@
       "name": "markup.underline.link"
     },
     "string": {
-      "begin": "\"",
-      "end": "\"",
+      "begin": "(\"{1,})",
+      "end": "\\1",
       "name": "string.quoted.double.tiramisu",
       "patterns": [
         {
-          "match": "\\\\."
+          "match": "\\\\.",
+          "name": "constant.character.escape.tiramisu"
         }
       ]
     },
@@ -108,8 +109,8 @@
       },
       "patterns": [
         {
-          "begin": "\"\"\"",
-          "end": "\"\"\"",
+          "begin": "(\"{1,})",
+          "end": "\\1",
           "patterns": [
             {
               "include": "source.js"
@@ -129,11 +130,11 @@
       },
       "patterns": [
         {
-          "begin": "\"\"\"",
-          "end": "\"\"\"",
+          "begin": "(\"{1,})",
+          "end": "\\1",
           "patterns": [
             {
-              "include": "source.python"
+              "include": "source.js"
             }
           ],
           "name": "markup.inserted.tiramisu"
@@ -150,11 +151,11 @@
       },
       "patterns": [
         {
-          "begin": "\"\"\"",
-          "end": "\"\"\"",
+          "begin": "(\"{1,})",
+          "end": "\\1",
           "patterns": [
             {
-              "include": "source.solidity"
+              "include": "source.js"
             }
           ],
           "name": "markup.inserted.tiramisu"
