@@ -26,9 +26,9 @@ export class FunctionCall {
 
 export class NamedParameter implements Node {
   name: string = "";
-  value: Node = "";
+  value: Node[] = [];
 
-  constructor(name: string, value: Node = "") {
+  constructor(name: string, value: Node[]) {
     this.name = name;
     this.value = value;
   }
@@ -38,7 +38,8 @@ export class NamedParameter implements Node {
       return map[this.name](this);
     }
 
-    return `${this.name}=${this.value.toString(map)}`;
+    const value = this.value.map((value) => value.toString(map)).join("");
+    return `${this.name}=${value}`;
   }
 }
 
