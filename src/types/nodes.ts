@@ -26,9 +26,9 @@ export class FunctionCall {
 
 export class NamedParameter implements Node {
   name: string = "";
-  value: Node[] = [];
+  value: Node[] | ArrayValue = [];
 
-  constructor(name: string, value: Node[]) {
+  constructor(name: string, value: Node[] | ArrayValue) {
     this.name = name;
     this.value = value;
   }
@@ -38,8 +38,12 @@ export class NamedParameter implements Node {
       return map[this.name](this);
     }
 
-    const value = this.value.map((value) => value.toString(map)).join("");
-    return `${this.name}=${value}`;
+    if (Array.isArray(this.value)) {
+      const value = this.value.map((value) => value.toString(map)).join("");
+      return `${this.name}=${value}`;
+    }
+
+    return `${this.name}=${this.value.toString(map)}`;
   }
 }
 
@@ -121,9 +125,9 @@ export class Paragraph implements Node {
 }
 
 export class Parameter implements Node {
-  value: Node[] = [];
+  value: Node[] | ArrayValue = [];
 
-  constructor(value: Node[]) {
+  constructor(value: Node[] | ArrayValue) {
     this.value = value;
   }
 
@@ -131,7 +135,12 @@ export class Parameter implements Node {
     if (map && "parameter" in map) {
       return map["parameter"](this);
     }
-    return this.value.map((value) => value.toString(map)).join("");
+
+    if (Array.isArray(this.value)) {
+      return this.value.map((value) => value.toString(map)).join("");
+    }
+
+    return this.value.toString(map);
   }
 }
 
