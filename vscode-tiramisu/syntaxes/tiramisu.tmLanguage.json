@@ -16,6 +16,9 @@
           "include": "#code-blocks"
         },
         {
+          "include": "#mermaid-blocks"
+        },
+        {
           "include": "#bold"
         },
         {
@@ -75,6 +78,33 @@
           "name": "variable.parameter.language.tiramisu"
         }
       }
+    },
+    "mermaid-blocks": {
+      "begin": "(mermaid)\\s*\\{",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.mermaid"
+        }
+      },
+      "contentName": "meta.embedded.mermaid",
+      "patterns": [
+        {
+          "begin": "(^|\\G)(\\s*)(.*)",
+          "while": "(^|\\G)(?!\\s*\\})",
+          "patterns": [
+            {
+              "contentName": "meta.embedded.block.mermaid",
+              "include": "source.mermaid"
+            }
+          ]
+        }
+      ]
     },
     "code-blocks": {
       "begin": "(code)\\s*\\{",
