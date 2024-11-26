@@ -96,7 +96,7 @@
       "patterns": [
         {
           "begin": "(^|\\G)(\\s*)(.*)",
-          "while": "(^|\\G)(?!\\s*\\})",
+          "while": "(^|\\G)(?!\\})",
           "patterns": [
             {
               "contentName": "meta.embedded.block.mermaid",
