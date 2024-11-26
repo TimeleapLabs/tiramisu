@@ -151,14 +151,23 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
   }
 
   namedParameter(ctx: NamedParameterCstChildren): Node {
-    const values = {
-      array: ctx.array || [],
-      textValue: ctx.paragraphValue || [],
-    };
-    return new NamedParameter(
-      ctx.Text.map((t) => t.image).join(""),
-      this.flattenAndSort<CstNode>(values).map((node) => this.visit(node))
-    );
+    if (ctx.array) {
+      return new NamedParameter(
+        ctx.Text.map((t) => t.image).join(""),
+        this.visit(ctx.array)
+      );
+    } else if (ctx.paragraphValue) {
+      return new NamedParameter(
+        ctx.Text.map((t) => t.image).join(""),
+        this.flattenAndSort<CstNode>({ textValue: ctx.paragraphValue }).map(
+          (node) => this.visit(node)
+        )
+      );
+    } else {
+      throw new Error(
+        "NamedParameter must have either an array or a paragraph"
+      );
+    }
   }
 
   anyWhite(ctx: AnyWhiteCstChildren): string {
