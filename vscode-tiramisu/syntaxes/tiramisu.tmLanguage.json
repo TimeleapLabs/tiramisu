@@ -121,6 +121,7 @@
         { "include": "#highlight-bash" },
         { "include": "#highlight-python" },
         { "include": "#highlight-solidity" },
+        { "include": "#highlight-tiramisu" },
         { "include": "#parameters" }
       ]
     },
@@ -244,6 +245,27 @@
           "patterns": [
             {
               "include": "source.js"
+            }
+          ],
+          "name": "markup.inserted.tiramisu"
+        }
+      ]
+    },
+    "highlight-tiramisu": {
+      "begin": "(language)\\s*=\\s*(tiramisu)",
+      "end": "(?=\\})",
+      "captures": {
+        "1": {
+          "name": "variable.parameter.language.tiramisu"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "(\"{1,})",
+          "end": "\\1",
+          "patterns": [
+            {
+              "include": "source.tiramisu"
             }
           ],
           "name": "markup.inserted.tiramisu"
