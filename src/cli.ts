@@ -2,11 +2,9 @@
 
 import { Command } from "commander";
 import { readFileSync } from "fs";
-import { compile } from "./index.js";
-import { logError } from "./utils/log.js";
+import { compile, TiramisuError } from "./index.js";
+import { logTiramisuError } from "./utils/log.js";
 import { resolve } from "path";
-
-import { IRecognitionException, ILexingError } from "chevrotain";
 
 const program = new Command();
 
@@ -57,7 +55,12 @@ program
 
       return console.dir(result, { depth: null });
     } catch (error) {
-      logError(src, file, error as ILexingError | IRecognitionException);
+      if (error instanceof TiramisuError) {
+        error.file = error.file ?? file;
+        logTiramisuError(src, error);
+      } else {
+        console.error("Unexpected error:", error);
+      }
       process.exitCode = 1;
     }
   });

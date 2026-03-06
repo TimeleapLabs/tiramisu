@@ -6,6 +6,7 @@ import {
   IMultiModeLexerDefinition,
   ILexerConfig,
 } from "chevrotain";
+import { TiramisuError } from "./utils/error.js";
 
 const LCurly = createToken({ name: "LCurly", pattern: /{/ });
 const RCurly = createToken({ name: "RCurly", pattern: /}/ });
@@ -73,7 +74,14 @@ export class TiramisuLexer extends Lexer {
     const lexResult = super.tokenize(text, initialMode);
 
     if (lexResult.errors.length > 0) {
-      throw Error(lexResult.errors[0].message);
+      const err = lexResult.errors[0];
+      throw new TiramisuError({
+        message: err.message,
+        hint: "The lexer encountered a character it doesn't recognize.",
+        line: err.line ?? 1,
+        column: err.column ?? 1,
+        length: err.length ?? 1,
+      });
     }
 
     function isEscapedFunctionName(image: string): boolean {
