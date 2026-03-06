@@ -10,6 +10,9 @@
     "atom": {
       "patterns": [
         {
+          "include": "#backslash-escape"
+        },
+        {
           "include": "#escape"
         },
         {
@@ -34,6 +37,10 @@
           "include": "#string"
         }
       ]
+    },
+    "backslash-escape": {
+      "match": "\\\\[\\\\{}\\[\\],=]",
+      "name": "constant.character.escape.tiramisu"
     },
     "link": {
       "match": "(https?|ftp)://[^ \\]\\[]+",
@@ -131,6 +138,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
@@ -152,6 +162,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
@@ -173,6 +186,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
@@ -194,6 +210,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
@@ -215,6 +234,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
@@ -223,7 +245,7 @@
           "end": "\\1",
           "patterns": [
             {
-              "include": "source.js"
+              "include": "source.python"
             }
           ],
           "name": "markup.inserted.tiramisu"
@@ -236,6 +258,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
@@ -244,7 +269,7 @@
           "end": "\\1",
           "patterns": [
             {
-              "include": "source.js"
+              "include": "source.solidity"
             }
           ],
           "name": "markup.inserted.tiramisu"
@@ -257,6 +282,9 @@
       "captures": {
         "1": {
           "name": "variable.parameter.language.tiramisu"
+        },
+        "2": {
+          "name": "string.unquoted.language.tiramisu"
         }
       },
       "patterns": [
