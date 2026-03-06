@@ -39,11 +39,11 @@ export class NamedParameter implements Node {
     }
 
     if (Array.isArray(this.value)) {
-      const value = this.value.map((value) => value.toString(map)).join("");
+      const value = this.value.map((value) => value.toString(map)).join("").trimEnd();
       return `${this.name}=${value}`;
     }
 
-    return `${this.name}=${this.value.toString(map)}`;
+    return `${this.name}=${this.value.toString(map).trimEnd()}`;
   }
 }
 
@@ -75,7 +75,7 @@ export class ArrayItem implements Node {
     if (map && "arrayItem" in map) {
       return map["arrayItem"](this);
     }
-    return this.value.map((value) => value.toString(map)).join("");
+    return this.value.map((value) => value.toString(map)).join("").trimEnd();
   }
 }
 
@@ -137,10 +137,10 @@ export class Parameter implements Node {
     }
 
     if (Array.isArray(this.value)) {
-      return this.value.map((value) => value.toString(map)).join("");
+      return this.value.map((value) => value.toString(map)).join("").trimEnd();
     }
 
-    return this.value.toString(map);
+    return this.value.toString(map).trimEnd();
   }
 }
 

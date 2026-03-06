@@ -11,6 +11,7 @@
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "declaration": true
   },
+  "exclude": ["tests", "dist"],
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended"
 }

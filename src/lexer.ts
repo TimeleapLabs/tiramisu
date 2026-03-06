@@ -76,23 +76,56 @@ export class TiramisuLexer extends Lexer {
       throw Error(lexResult.errors[0].message);
     }
 
+    function isEscapedFunctionName(image: string): boolean {
+      if (image.length < 2 || image[0] !== "\\") return false;
+      return !"\\{}[],=".includes(image[1]);
+    }
+
     let curlyCount = 0;
+    let escapedBraceDepth = 0;
     let previousToken;
 
     for (const token of lexResult.tokens) {
       if (token.tokenType.name === "LCurly") {
-        if (previousToken && previousToken.tokenType.name === "Text") {
-          previousToken.tokenType = Function;
-          if (Function.tokenTypeIdx) {
-            previousToken.tokenTypeIdx = Function.tokenTypeIdx;
+        if (escapedBraceDepth > 0) {
+          token.tokenType = Text;
+          if (Text.tokenTypeIdx) {
+            token.tokenTypeIdx = Text.tokenTypeIdx;
           }
+          token.image = "{";
+          escapedBraceDepth++;
+        } else if (previousToken && previousToken.tokenType.name === "Text" && isEscapedFunctionName(previousToken.image)) {
+          // Strip leading backslash but do NOT reclassify to Function
+          previousToken.image = previousToken.image.slice(1);
+          token.tokenType = Text;
+          if (Text.tokenTypeIdx) {
+            token.tokenTypeIdx = Text.tokenTypeIdx;
+          }
+          token.image = "{";
+          escapedBraceDepth++;
+        } else {
+          if (previousToken && previousToken.tokenType.name === "Text") {
+            previousToken.tokenType = Function;
+            if (Function.tokenTypeIdx) {
+              previousToken.tokenTypeIdx = Function.tokenTypeIdx;
+            }
+          }
+          curlyCount++;
         }
-        curlyCount++;
       } else if (token.tokenType.name === "RCurly") {
-        curlyCount--;
+        if (escapedBraceDepth > 0) {
+          token.tokenType = Text;
+          if (Text.tokenTypeIdx) {
+            token.tokenTypeIdx = Text.tokenTypeIdx;
+          }
+          token.image = "}";
+          escapedBraceDepth--;
+        } else {
+          curlyCount--;
+        }
       }
 
-      if (curlyCount === 0 && treatAsText.includes(token.tokenType.name)) {
+      if (curlyCount === 0 && escapedBraceDepth === 0 && treatAsText.includes(token.tokenType.name)) {
         if (token.tokenType.name === "StringLiteral") {
           const numberOfQuotes = token.image.match(/^"*/)?.[0].length || 0;
           token.image = token.image.slice(numberOfQuotes, -numberOfQuotes);
@@ -110,6 +143,13 @@ export class TiramisuLexer extends Lexer {
         token.tokenType.name !== "MultiLineBreak"
       ) {
         previousToken = token;
+      }
+    }
+
+    // Second pass: unescape backslash sequences in Text tokens
+    for (const token of lexResult.tokens) {
+      if (token.tokenType.name === "Text" || token.tokenType.name === "Function") {
+        token.image = token.image.replace(/\\([\\{}\[\],=])/g, "$1");
       }
     }
 

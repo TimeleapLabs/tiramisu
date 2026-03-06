@@ -123,7 +123,6 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
     const values = {
       array: ctx.array || [],
       textValue: ctx.paragraphValue || [],
-      anyWhite: ctx.anyWhite || [],
     };
     return new ArrayItem(
       this.flattenAndSort<CstNode>(values).map((node) => this.visit(node))
@@ -143,8 +142,12 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
   }
 
   parameter(ctx: ParameterCstChildren): Node {
+    const values = {
+      array: ctx.array || [],
+      paragraphValue: ctx.paragraphValue || [],
+    };
     return new Parameter(
-      this.flattenAndSort<CstNode | IToken>(ctx).map((node) =>
+      this.flattenAndSort<CstNode | IToken>(values).map((node) =>
         this.imageOrVisit(node)
       )
     );
