@@ -31,7 +31,8 @@ describe("error reporting", () => {
     expect(err.length).toBe(2);
     expect(err.hint).toBe("test hint");
     expect(err.file).toBe("test.tiramisu");
-    expect(err.message).toBe("test error");
+    expect(err.message).toBe("test hint");
+    expect(err.detail).toBe("test error");
   });
 
   test("unclosed brace produces MismatchedTokenException hint", () => {

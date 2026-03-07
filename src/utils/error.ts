@@ -4,6 +4,7 @@ export class TiramisuError extends Error {
   public column: number;
   public length: number;
   public hint: string;
+  public detail: string;
 
   constructor(opts: {
     message: string;
@@ -13,9 +14,10 @@ export class TiramisuError extends Error {
     length: number;
     file?: string;
   }) {
-    super(opts.message);
+    super(opts.hint || opts.message);
     this.name = "TiramisuError";
     this.hint = opts.hint;
+    this.detail = opts.message;
     this.line = opts.line;
     this.column = opts.column;
     this.length = opts.length;
