@@ -84,9 +84,51 @@ export class TiramisuLexer extends Lexer {
       });
     }
 
+    const identifierRe = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+    const unescapeRe = /\\([\\{}\[\],="])/g;
+
     function isEscapedFunctionName(image: string): boolean {
       if (image.length < 2 || image[0] !== "\\") return false;
       return !"\\{}[],=\"".includes(image[1]);
+    }
+
+    // Pre-pass: split Text tokens like "(bold" into Text("(") + Text("bold")
+    // when followed by LCurly, so function name validation works correctly.
+    for (let i = 0; i < lexResult.tokens.length; i++) {
+      const token = lexResult.tokens[i];
+      if (token.tokenType.name !== "Text") continue;
+
+      // Find the next non-whitespace token
+      let next = null;
+      for (let j = i + 1; j < lexResult.tokens.length; j++) {
+        const t = lexResult.tokens[j];
+        if (t.tokenType.name !== "WhiteSpace" && t.tokenType.name !== "LineBreak" && t.tokenType.name !== "MultiLineBreak") {
+          next = t;
+          break;
+        }
+      }
+      if (!next || next.tokenType.name !== "LCurly") continue;
+
+      const unescaped = token.image.replace(unescapeRe, "$1");
+      if (identifierRe.test(unescaped)) continue; // already a valid identifier
+      if (isEscapedFunctionName(token.image)) continue; // escaped function name
+      // Skip tokens that start with an escape sequence (e.g. \\bold)
+      if (/^\\[\\{}\[\],="]/.test(token.image)) continue;
+
+      // Only split if identifier suffix is preceded by a non-word character
+      const match = unescaped.match(/(?<=[^a-zA-Z0-9_])([a-zA-Z][a-zA-Z0-9_]*)$/);
+      if (match) {
+        const funcName = match[1];
+        const prefix = token.image.slice(0, token.image.length - funcName.length);
+        token.image = prefix;
+        const funcToken = {
+          ...token,
+          image: funcName,
+          startOffset: token.startOffset + prefix.length,
+          startColumn: (token.startColumn ?? 1) + prefix.length,
+        };
+        lexResult.tokens.splice(i + 1, 0, funcToken);
+      }
     }
 
     let curlyCount = 0;
@@ -112,13 +154,24 @@ export class TiramisuLexer extends Lexer {
           token.image = "{";
           escapedBraceDepth++;
         } else {
-          if (previousToken && previousToken.tokenType.name === "Text") {
+          if (previousToken && previousToken.tokenType.name === "Text" && identifierRe.test(previousToken.image.replace(unescapeRe, "$1"))) {
             previousToken.tokenType = Function;
             if (Function.tokenTypeIdx) {
               previousToken.tokenTypeIdx = Function.tokenTypeIdx;
             }
+            curlyCount++;
+          } else if (!previousToken || previousToken.tokenType.name !== "Text") {
+            // No preceding text token — bare { is a valid block opener
+            curlyCount++;
+          } else {
+            // Preceding text is not a valid identifier — treat { as literal text
+            token.tokenType = Text;
+            if (Text.tokenTypeIdx) {
+              token.tokenTypeIdx = Text.tokenTypeIdx;
+            }
+            token.image = "{";
+            escapedBraceDepth++;
           }
-          curlyCount++;
         }
       } else if (token.tokenType.name === "RCurly") {
         if (escapedBraceDepth > 0) {

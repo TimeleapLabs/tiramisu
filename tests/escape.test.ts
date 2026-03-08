@@ -48,15 +48,27 @@ describe("backslash escape sequences", () => {
   });
 });
 
+describe("function name validation", () => {
+  test("non-identifier prefix is preserved as text around function call", () => {
+    const result = compile("(bold { xyz })");
+    expect(result.toString()).toBe("(bold([xyz]))");
+  });
+
+  test("token starting with digit is not a function name", () => {
+    const result = compile("2func { xyz }");
+    expect(result.toString()).toBe("2func { xyz }");
+  });
+});
+
 describe("escaped function names", () => {
   test("\\bold { text } produces literal text, not function call", () => {
     const result = compile("\\bold { text }");
     expect(result.toString()).toBe("bold { text }");
   });
 
-  test("\\\\bold { text } produces literal \\ followed by function call", () => {
+  test("\\\\bold { text } produces literal text, not function call", () => {
     const result = compile("\\\\bold { text }");
-    expect(result.toString()).toBe("\\bold([text])");
+    expect(result.toString()).toBe("\\bold { text }");
   });
 
   test("nested escaped blocks: \\a { \\b { c } }", () => {
