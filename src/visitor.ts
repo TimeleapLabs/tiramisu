@@ -201,7 +201,7 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
     return new PureText([
       ctx.StringLiteral.map((s) => {
         const numberOfQuotes = s.image.match(/^"*/)?.[0].length || 0;
-        return s.image.slice(numberOfQuotes, -numberOfQuotes);
+        return s.image.slice(numberOfQuotes, -numberOfQuotes).replace(/\\"/g, '"');
       }).join(""),
     ]);
   }

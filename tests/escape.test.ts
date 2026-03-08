@@ -48,6 +48,33 @@ describe("backslash escape sequences", () => {
   });
 });
 
+describe("escaped quotes inside strings", () => {
+  test('\\" inside quoted string does not end the string', () => {
+    const result = compile('a { "\\" }" }');
+    expect(result.toString()).toBe('a([" }])');
+  });
+
+  test('\\" followed by closing quote works', () => {
+    const result = compile('a { "x\\"" }');
+    expect(result.toString()).toBe('a([x"])');
+  });
+
+  test('\\" followed by } does not close function', () => {
+    const result = compile('a { "x\\"}" }');
+    expect(result.toString()).toBe('a([x"}])');
+  });
+
+  test('multiple \\" inside string', () => {
+    const result = compile('a { "x \\"y\\"" }');
+    expect(result.toString()).toBe('a([x "y"])');
+  });
+
+  test('\\" with braces inside string', () => {
+    const result = compile('a { "{ \\" }" }');
+    expect(result.toString()).toBe('a([{ " }])');
+  });
+});
+
 describe("function name validation", () => {
   test("non-identifier prefix is preserved as text around function call", () => {
     const result = compile("(bold { xyz })");
