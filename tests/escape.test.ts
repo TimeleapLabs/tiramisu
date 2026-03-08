@@ -36,6 +36,16 @@ describe("backslash escape sequences", () => {
     const result = compile("bold { hello\\, world }");
     expect(result.toString()).toBe("bold([hello, world])");
   });
+
+  test('\\" produces literal "', () => {
+    const result = compile('\\"hello\\"');
+    expect(result.toString()).toBe('"hello"');
+  });
+
+  test('\\" inside function parameters preserves quotes', () => {
+    const result = compile('code { \\"string\\".toUpperCase() }');
+    expect(result.toString()).toBe('code(["string".toUpperCase()])');
+  });
 });
 
 describe("escaped function names", () => {

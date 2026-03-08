@@ -18,7 +18,7 @@ const Function = createToken({ name: "Function", pattern: Lexer.NA });
 
 const Text = createToken({
   name: "Text",
-  pattern: /(\\[\\{}[\],=]|[^\s{}[\],=])+/,
+  pattern: /(\\[\\{}[\],="]|[^\s{}[\],=])+/,
 });
 
 const StringLiteral = createToken({
@@ -86,7 +86,7 @@ export class TiramisuLexer extends Lexer {
 
     function isEscapedFunctionName(image: string): boolean {
       if (image.length < 2 || image[0] !== "\\") return false;
-      return !"\\{}[],=".includes(image[1]);
+      return !"\\{}[],=\"".includes(image[1]);
     }
 
     let curlyCount = 0;
@@ -157,7 +157,7 @@ export class TiramisuLexer extends Lexer {
     // Second pass: unescape backslash sequences in Text tokens
     for (const token of lexResult.tokens) {
       if (token.tokenType.name === "Text" || token.tokenType.name === "Function") {
-        token.image = token.image.replace(/\\([\\{}\[\],=])/g, "$1");
+        token.image = token.image.replace(/\\([\\{}\[\],="])/g, "$1");
       }
     }
 
