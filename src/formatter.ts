@@ -54,14 +54,23 @@ const printNode = (node: Node, ctx: PrintContext): string => {
 };
 
 const printTiramisu = (node: Tiramisu, ctx: PrintContext): string => {
-  return node.children.map((child) => printNode(child, ctx)).join("");
+  const parts: string[] = [];
+  for (const child of node.children) {
+    if (typeof child === "string") continue;
+    const printed = printNode(child, ctx).trimEnd();
+    if (printed !== "") parts.push(printed);
+  }
+  return parts.join("\n\n");
 };
 
 const printParagraph = (node: Paragraph, ctx: PrintContext): string => {
-  return node.children.map((child) => {
-    if (typeof child === "string") return child;
-    return printNode(child, ctx);
-  }).join("");
+  return node.children
+    .filter((child) => typeof child !== "string" || child.trim() !== "")
+    .map((child) => {
+      if (typeof child === "string") return child;
+      return printNode(child, ctx);
+    })
+    .join("");
 };
 
 const printMixedText = (node: MixedText, ctx: PrintContext): string => {

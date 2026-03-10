@@ -19,4 +19,14 @@ describe("formatter", () => {
       expect(format("hello\n\n\n")).toBe("hello\n");
     });
   });
+
+  describe("paragraphs", () => {
+    test("paragraphs are separated by double newline", () => {
+      expect(format("hello\n\nworld")).toBe("hello\n\nworld\n");
+    });
+
+    test("three+ newlines between paragraphs collapse to two", () => {
+      expect(format("hello\n\n\n\nworld")).toBe("hello\n\nworld\n");
+    });
+  });
 });
