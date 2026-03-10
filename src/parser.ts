@@ -104,12 +104,22 @@ class TiramisuParser extends CstParser {
     this.MANY_SEP({
       SEP: Comma,
       DEF: () => {
-        this.MANY(() => this.SUBRULE(this.anyWhite));
+        this.MANY(() => {
+          this.OR2([
+            { ALT: () => this.SUBRULE(this.anyWhite) },
+            { ALT: () => this.CONSUME(MultiLineBreak) },
+          ]);
+        });
         this.OR([
           { ALT: () => this.SUBRULE(this.namedParameter) },
           { ALT: () => this.SUBRULE(this.parameter) },
         ]);
-        this.MANY1(() => this.SUBRULE1(this.anyWhite));
+        this.MANY1(() => {
+          this.OR3([
+            { ALT: () => this.SUBRULE1(this.anyWhite) },
+            { ALT: () => this.CONSUME1(MultiLineBreak) },
+          ]);
+        });
       },
     });
   });
