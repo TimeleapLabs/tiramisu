@@ -111,6 +111,13 @@ describe("formatter", () => {
       const result = format(input);
       expect(result).toContain('"""');
     });
+
+    test("function with multiline content uses multi-line layout", () => {
+      const input = 'code { language = python, """\n  print("hello")\n""" }';
+      const result = format(input);
+      // Should NOT be inline since content contains newlines
+      expect(result).toContain("code {\n");
+    });
   });
 
   describe("top-level escaping", () => {

@@ -183,7 +183,7 @@ const printFunctionCall = (node: FunctionCall, ctx: PrintContext): string => {
   const inline = `${node.functionName} { ${inlineParams} }`;
   const currentIndent = ctx.indent * ctx.depth;
 
-  if (currentIndent + inline.length <= ctx.lineWidth) {
+  if (currentIndent + inline.length <= ctx.lineWidth && !inline.includes("\n")) {
     return inline;
   }
 
@@ -227,7 +227,7 @@ const printArrayValue = (node: ArrayValue, ctx: PrintContext): string => {
   const inline = `[${items.join(", ")}]`;
   const currentIndent = ctx.indent * ctx.depth;
 
-  if (currentIndent + inline.length <= ctx.lineWidth) {
+  if (currentIndent + inline.length <= ctx.lineWidth && !inline.includes("\n")) {
     return inline;
   }
 

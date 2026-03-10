@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name("tiramisu")
   .description("A delightful language for structured textual data.")
-  .version("1.1.0");
+  .version("1.8.0");
 
 program
   .command("compile")
