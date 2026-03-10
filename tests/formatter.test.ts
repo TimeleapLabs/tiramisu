@@ -93,6 +93,26 @@ describe("formatter", () => {
     });
   });
 
+  describe("string literals and escaping", () => {
+    test("text with commas in parameters uses string literal", () => {
+      expect(format('list { one, "two, three" }')).toBe(
+        'list { one, "two, three" }\n'
+      );
+    });
+
+    test("text with quotes uses escaped quotes", () => {
+      expect(format('func { "say \\"hello\\"" }')).toBe(
+        'func { "say \\"hello\\"" }\n'
+      );
+    });
+
+    test("multiline string uses triple quotes", () => {
+      const input = 'code { language = python, """\n  def hello():\n    print("world")\n""" }';
+      const result = format(input);
+      expect(result).toContain('"""');
+    });
+  });
+
   describe("arrays", () => {
     test("short array stays inline", () => {
       expect(format("list { [one, two, three] }")).toBe(

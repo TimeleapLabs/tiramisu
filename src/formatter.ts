@@ -80,8 +80,41 @@ const printMixedText = (node: MixedText, ctx: PrintContext): string => {
   }).join("");
 };
 
+const needsQuoting = (text: string): boolean => {
+  return /[,=\[\]{}"]/.test(text) || text.includes("\n");
+};
+
+const quoteString = (text: string): string => {
+  if (text.includes("\n")) {
+    // Multi-line: use triple quotes (or more if content contains """)
+    let quotes = '"""';
+    while (text.includes(quotes)) {
+      quotes += '"';
+    }
+    return `${quotes}\n${text}\n${quotes}`;
+  }
+  // Single-line: use double quotes with \" escaping
+  const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  return `"${escaped}"`;
+};
+
 const printPureText = (node: PureText, ctx: PrintContext): string => {
-  return node.shards.join("");
+  // PureText.shards is typed as string[] but at runtime can contain PureText
+  // objects from parsed string literals (the visitor casts them).
+  const parts: string[] = [];
+  for (const shard of node.shards as (string | PureText)[]) {
+    if (typeof shard === "string") {
+      parts.push(shard);
+    } else {
+      const text = shard.shards.join("");
+      if (ctx.insideFunction && needsQuoting(text)) {
+        parts.push(quoteString(text));
+      } else {
+        parts.push(text);
+      }
+    }
+  }
+  return parts.join("");
 };
 
 const indentStr = (ctx: PrintContext): string => {
