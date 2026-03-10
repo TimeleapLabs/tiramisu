@@ -44,7 +44,7 @@ const printNode = (node: Node, ctx: PrintContext): string => {
   if (node instanceof MixedText) return printMixedText(node, ctx);
   if (node instanceof PureText) return printPureText(node, ctx);
   if (node instanceof FunctionCall) return printFunctionCall(node, ctx);
-  if (node instanceof Parameters) return printParameters(node, ctx);
+  if (node instanceof Parameters) return printParametersInline(node, ctx);
   if (node instanceof Parameter) return printParameter(node, ctx);
   if (node instanceof NamedParameter) return printNamedParameter(node, ctx);
   if (node instanceof ArrayValue) return printArrayValue(node, ctx);
@@ -84,10 +84,33 @@ const printPureText = (node: PureText, ctx: PrintContext): string => {
   return node.shards.join("");
 };
 
+const printFunctionCall = (node: FunctionCall, ctx: PrintContext): string => {
+  const innerCtx = { ...ctx, depth: ctx.depth + 1, insideFunction: true };
+  const params = printParametersInline(node.parameters, innerCtx);
+  return `${node.functionName} { ${params} }`;
+};
+
+const printParametersInline = (node: Parameters, ctx: PrintContext): string => {
+  return node.parameters
+    .map((p) => printNode(p, ctx).trimEnd())
+    .join(", ");
+};
+
+const printParameter = (node: Parameter, ctx: PrintContext): string => {
+  if (node.value instanceof ArrayValue) {
+    return printArrayValue(node.value, ctx);
+  }
+  return node.value.map((v) => printNode(v, ctx)).join("").trimEnd();
+};
+
+const printNamedParameter = (node: NamedParameter, ctx: PrintContext): string => {
+  if (node.value instanceof ArrayValue) {
+    return `${node.name} = ${printArrayValue(node.value, ctx)}`;
+  }
+  const value = node.value.map((v) => printNode(v, ctx)).join("").trimEnd();
+  return `${node.name} = ${value}`;
+};
+
 // Stubs for now — implemented in later tasks
-const printFunctionCall = (node: FunctionCall, ctx: PrintContext): string => "";
-const printParameters = (node: Parameters, ctx: PrintContext): string => "";
-const printParameter = (node: Parameter, ctx: PrintContext): string => "";
-const printNamedParameter = (node: NamedParameter, ctx: PrintContext): string => "";
 const printArrayValue = (node: ArrayValue, ctx: PrintContext): string => "";
 const printArrayItem = (node: ArrayItem, ctx: PrintContext): string => "";

@@ -29,4 +29,34 @@ describe("formatter", () => {
       expect(format("hello\n\n\n\nworld")).toBe("hello\n\nworld\n");
     });
   });
+
+  describe("inline function calls", () => {
+    test("simple function call", () => {
+      expect(format("bold { hello }")).toBe("bold { hello }\n");
+    });
+
+    test("normalizes spacing around braces", () => {
+      expect(format("bold {hello}")).toBe("bold { hello }\n");
+    });
+
+    test("nested function calls", () => {
+      expect(format("bold { italic { text } }")).toBe("bold { italic { text } }\n");
+    });
+
+    test("named parameter", () => {
+      expect(format("heading { level = 1, Tiramisu }")).toBe(
+        "heading { level = 1, Tiramisu }\n"
+      );
+    });
+
+    test("normalizes spacing around equals", () => {
+      expect(format("heading { level  =  1, Tiramisu }")).toBe(
+        "heading { level = 1, Tiramisu }\n"
+      );
+    });
+
+    test("function in text", () => {
+      expect(format("This is bold { text }.")).toBe("This is bold { text }.\n");
+    });
+  });
 });
