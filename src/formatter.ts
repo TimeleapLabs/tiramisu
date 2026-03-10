@@ -98,13 +98,18 @@ const quoteString = (text: string): string => {
   return `"${escaped}"`;
 };
 
+const escapeTopLevel = (text: string): string => {
+  // Escape { that would be parsed as function call openers
+  return text.replace(/([a-zA-Z][a-zA-Z0-9_]*\s*)\{/g, "$1\\{");
+};
+
 const printPureText = (node: PureText, ctx: PrintContext): string => {
   // PureText.shards is typed as string[] but at runtime can contain PureText
   // objects from parsed string literals (the visitor casts them).
   const parts: string[] = [];
   for (const shard of node.shards as (string | PureText)[]) {
     if (typeof shard === "string") {
-      parts.push(shard);
+      parts.push(ctx.insideFunction ? shard : escapeTopLevel(shard));
     } else {
       const text = shard.shards.join("");
       if (ctx.insideFunction && needsQuoting(text)) {

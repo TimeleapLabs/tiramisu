@@ -113,6 +113,14 @@ describe("formatter", () => {
     });
   });
 
+  describe("top-level escaping", () => {
+    test("literal { after identifier-like text is escaped", () => {
+      // Source: "not\{ a function" compiles to text "not{ a function"
+      // Formatter must re-emit: "not\{ a function" to prevent parsing "not" as function
+      expect(format("not\\{ a function")).toBe("not\\{ a function\n");
+    });
+  });
+
   describe("arrays", () => {
     test("short array stays inline", () => {
       expect(format("list { [one, two, three] }")).toBe(
