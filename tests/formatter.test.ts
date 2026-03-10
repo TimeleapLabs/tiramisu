@@ -59,4 +59,37 @@ describe("formatter", () => {
       expect(format("This is bold { text }.")).toBe("This is bold { text }.\n");
     });
   });
+
+  describe("multi-line function calls", () => {
+    test("long function call breaks to multi-line", () => {
+      const input = "table { row = [Price, Terms of Use], row = [$10.0, xyz link { https://example.com/tos }] }";
+      const expected = [
+        "table {",
+        "  row = [Price, Terms of Use],",
+        "  row = [$10.0, xyz link { https://example.com/tos }]",
+        "}",
+        "",
+      ].join("\n");
+      expect(format(input)).toBe(expected);
+    });
+
+    test("multi-param function breaks to multi-line when exceeding line width", () => {
+      const input = "list { item = one, item = two, item = three }";
+      const expected = [
+        "list {",
+        "  item = one,",
+        "  item = two,",
+        "  item = three",
+        "}",
+        "",
+      ].join("\n");
+      expect(format(input, { lineWidth: 40 })).toBe(expected);
+    });
+
+    test("short multi-param stays inline when it fits", () => {
+      expect(format("list { one, two, three }")).toBe(
+        "list { one, two, three }\n"
+      );
+    });
+  });
 });

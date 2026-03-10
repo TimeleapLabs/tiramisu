@@ -84,10 +84,31 @@ const printPureText = (node: PureText, ctx: PrintContext): string => {
   return node.shards.join("");
 };
 
+const indentStr = (ctx: PrintContext): string => {
+  return " ".repeat(ctx.indent * ctx.depth);
+};
+
 const printFunctionCall = (node: FunctionCall, ctx: PrintContext): string => {
   const innerCtx = { ...ctx, depth: ctx.depth + 1, insideFunction: true };
-  const params = printParametersInline(node.parameters, innerCtx);
-  return `${node.functionName} { ${params} }`;
+
+  // Try inline
+  const inlineParams = printParametersInline(node.parameters, innerCtx);
+  const inline = `${node.functionName} { ${inlineParams} }`;
+  const currentIndent = ctx.indent * ctx.depth;
+
+  if (currentIndent + inline.length <= ctx.lineWidth) {
+    return inline;
+  }
+
+  // Multi-line
+  const paramIndent = indentStr(innerCtx);
+  const params = node.parameters.parameters.map((p, i) => {
+    const printed = printNode(p, innerCtx).trimEnd();
+    const comma = i < node.parameters.parameters.length - 1 ? "," : "";
+    return `${paramIndent}${printed}${comma}`;
+  });
+
+  return `${node.functionName} {\n${params.join("\n")}\n${indentStr(ctx)}}`;
 };
 
 const printParametersInline = (node: Parameters, ctx: PrintContext): string => {
@@ -111,6 +132,11 @@ const printNamedParameter = (node: NamedParameter, ctx: PrintContext): string =>
   return `${node.name} = ${value}`;
 };
 
-// Stubs for now — implemented in later tasks
-const printArrayValue = (node: ArrayValue, ctx: PrintContext): string => "";
-const printArrayItem = (node: ArrayItem, ctx: PrintContext): string => "";
+const printArrayValue = (node: ArrayValue, ctx: PrintContext): string => {
+  const items = node.values.map((v) => printNode(v, ctx).trimEnd()).join(", ");
+  return `[${items}]`;
+};
+
+const printArrayItem = (node: ArrayItem, ctx: PrintContext): string => {
+  return node.value.map((v) => printNode(v, ctx)).join("").trimEnd();
+};
