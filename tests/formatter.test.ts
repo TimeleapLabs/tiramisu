@@ -121,6 +121,25 @@ describe("formatter", () => {
     });
   });
 
+  describe("integration", () => {
+    test("formatting is idempotent", () => {
+      const input = "bold {hello}\n\nlist { one,two,three }";
+      const once = format(input);
+      const twice = format(once);
+      expect(once).toBe(twice);
+    });
+
+    test("example file roundtrips", () => {
+      const fs = require("fs");
+      const src = fs.readFileSync("example.tiramisu", "utf-8");
+      const formatted = format(src);
+      // Should parse without errors
+      const reparsed = format(formatted);
+      // Idempotent
+      expect(formatted).toBe(reparsed);
+    });
+  });
+
   describe("arrays", () => {
     test("short array stays inline", () => {
       expect(format("list { [one, two, three] }")).toBe(

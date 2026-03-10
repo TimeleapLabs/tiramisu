@@ -84,6 +84,10 @@ const needsQuoting = (text: string): boolean => {
   return /[,=\[\]{}"]/.test(text) || text.includes("\n");
 };
 
+const needsQuotingTopLevel = (text: string): boolean => {
+  return /[a-zA-Z][a-zA-Z0-9_]*\s*\{/.test(text) || /[{}]/.test(text);
+};
+
 const quoteString = (text: string): string => {
   if (text.includes("\n")) {
     // Multi-line: use triple quotes (or more if content contains """)
@@ -91,7 +95,9 @@ const quoteString = (text: string): string => {
     while (text.includes(quotes)) {
       quotes += '"';
     }
-    return `${quotes}\n${text}\n${quotes}`;
+    const prefix = text.startsWith("\n") ? "" : "\n";
+    const suffix = text.endsWith("\n") ? "" : "\n";
+    return `${quotes}${prefix}${text}${suffix}${quotes}`;
   }
   // Single-line: use double quotes with \" escaping
   const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -100,25 +106,68 @@ const quoteString = (text: string): string => {
 
 const escapeTopLevel = (text: string): string => {
   // Escape { that would be parsed as function call openers
-  return text.replace(/([a-zA-Z][a-zA-Z0-9_]*\s*)\{/g, "$1\\{");
+  let result = text.replace(/([a-zA-Z][a-zA-Z0-9_]*\s*)\{/g, "$1\\{");
+  // Escape } that would be parsed as unmatched closing braces
+  result = result.replace(/}/g, "\\}");
+  return result;
 };
 
 const printPureText = (node: PureText, ctx: PrintContext): string => {
   // PureText.shards is typed as string[] but at runtime can contain PureText
   // objects from parsed string literals (the visitor casts them).
-  const parts: string[] = [];
-  for (const shard of node.shards as (string | PureText)[]) {
-    if (typeof shard === "string") {
-      parts.push(ctx.insideFunction ? shard : escapeTopLevel(shard));
-    } else {
-      const text = shard.shards.join("");
-      if (ctx.insideFunction && needsQuoting(text)) {
-        parts.push(quoteString(text));
+  if (ctx.insideFunction) {
+    const parts: string[] = [];
+    for (const shard of node.shards as (string | PureText)[]) {
+      if (typeof shard === "string") {
+        parts.push(shard);
       } else {
-        parts.push(text);
+        const text = shard.shards.join("");
+        if (needsQuoting(text)) {
+          parts.push(quoteString(text));
+        } else {
+          parts.push(text);
+        }
       }
     }
+    return parts.join("");
   }
+
+  // At top level: collect all text first, then apply escaping so that
+  // cross-shard patterns (e.g. identifier + "{") are handled correctly.
+  const segments: { text: string; isStringLiteral: boolean }[] = [];
+  for (const shard of node.shards as (string | PureText)[]) {
+    if (typeof shard === "string") {
+      segments.push({ text: shard, isStringLiteral: false });
+    } else {
+      const text = shard.shards.join("");
+      segments.push({ text, isStringLiteral: true });
+    }
+  }
+
+  // Build final text, quoting string literals that need it and escaping
+  // plain text shards.
+  const parts: string[] = [];
+  // Accumulate plain text to escape as a batch
+  let plainBuf = "";
+  const flushPlain = () => {
+    if (plainBuf) {
+      parts.push(escapeTopLevel(plainBuf));
+      plainBuf = "";
+    }
+  };
+  for (const seg of segments) {
+    if (seg.isStringLiteral) {
+      flushPlain();
+      if (needsQuotingTopLevel(seg.text)) {
+        parts.push(quoteString(seg.text));
+      } else {
+        parts.push(seg.text);
+      }
+    } else {
+      plainBuf += seg.text;
+    }
+  }
+  flushPlain();
   return parts.join("");
 };
 
