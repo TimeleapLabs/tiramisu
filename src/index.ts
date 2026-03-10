@@ -6,6 +6,7 @@ import { TiramisuError } from "./utils/error.js";
 import { TiramisuVisitor } from "./visitor.js";
 
 export { TiramisuError } from "./utils/error.js";
+export { format, type FormatOptions } from "./formatter.js";
 
 function getParserHint(err: IRecognitionException): string {
   switch (err.name) {
