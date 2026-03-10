@@ -92,4 +92,19 @@ describe("formatter", () => {
       );
     });
   });
+
+  describe("arrays", () => {
+    test("short array stays inline", () => {
+      expect(format("list { [one, two, three] }")).toBe(
+        "list { [one, two, three] }\n"
+      );
+    });
+
+    test("long array breaks to multi-line", () => {
+      const input = "func { [very long item one, very long item two, very long item three] }";
+      const result = format(input, { lineWidth: 40 });
+      expect(result).toContain("[\n");
+      expect(result).toContain("very long item one,");
+    });
+  });
 });

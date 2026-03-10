@@ -133,8 +133,25 @@ const printNamedParameter = (node: NamedParameter, ctx: PrintContext): string =>
 };
 
 const printArrayValue = (node: ArrayValue, ctx: PrintContext): string => {
-  const items = node.values.map((v) => printNode(v, ctx).trimEnd()).join(", ");
-  return `[${items}]`;
+  const innerCtx = { ...ctx, depth: ctx.depth + 1 };
+
+  // Try inline
+  const items = node.values.map((v) => printNode(v, innerCtx).trimEnd());
+  const inline = `[${items.join(", ")}]`;
+  const currentIndent = ctx.indent * ctx.depth;
+
+  if (currentIndent + inline.length <= ctx.lineWidth) {
+    return inline;
+  }
+
+  // Multi-line
+  const itemIndent = indentStr(innerCtx);
+  const multiItems = items.map((item, i) => {
+    const comma = i < items.length - 1 ? "," : "";
+    return `${itemIndent}${item}${comma}`;
+  });
+
+  return `[\n${multiItems.join("\n")}\n${indentStr(ctx)}]`;
 };
 
 const printArrayItem = (node: ArrayItem, ctx: PrintContext): string => {
