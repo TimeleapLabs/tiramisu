@@ -11,7 +11,7 @@
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "declaration": true
   },
-  "exclude": ["tests", "dist"],
+  "exclude": ["tests", "dist", "vscode-tiramisu"],
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended"
 }

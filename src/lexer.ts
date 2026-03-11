@@ -187,10 +187,8 @@ export class TiramisuLexer extends Lexer {
       }
 
       if (curlyCount === 0 && escapedBraceDepth === 0 && treatAsText.includes(token.tokenType.name)) {
-        if (token.tokenType.name === "StringLiteral") {
-          const numberOfQuotes = token.image.match(/^"*/)?.[0].length || 0;
-          token.image = token.image.slice(numberOfQuotes, -numberOfQuotes).replace(/\\"/g, '"');
-        }
+        // At top level, quotes are literal text — keep the original image
+        // (the second-pass unescape will still process \\ \{ etc. as Text escapes).
 
         token.tokenType = Text;
         if (Text.tokenTypeIdx) {

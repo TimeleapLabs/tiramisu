@@ -201,7 +201,22 @@ export class TiramisuVisitor extends BaseTiramisuCstVisitor {
     return new PureText([
       ctx.StringLiteral.map((s) => {
         const numberOfQuotes = s.image.match(/^"*/)?.[0].length || 0;
-        return s.image.slice(numberOfQuotes, -numberOfQuotes).replace(/\\"/g, '"');
+        const raw = s.image.slice(numberOfQuotes, -numberOfQuotes);
+        // Process escape units left-to-right (matching lexer's \\[\s\S] grouping)
+        let result = '';
+        for (let i = 0; i < raw.length; i++) {
+          if (raw[i] === '\\' && i + 1 < raw.length) {
+            if (raw[i + 1] === '"') {
+              result += '"';  // \" → "
+            } else {
+              result += raw[i] + raw[i + 1];  // \\ or \x → keep as-is
+            }
+            i++; // skip paired char
+          } else {
+            result += raw[i];
+          }
+        }
+        return result;
       }).join(""),
     ]);
   }

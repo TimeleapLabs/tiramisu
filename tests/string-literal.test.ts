@@ -2,19 +2,19 @@ import { describe, expect, test } from "bun:test";
 import { compile } from "../src/index.ts";
 
 describe("string literals", () => {
-  test("single quotes in text mode become plain text", () => {
+  test("quotes at top level are literal text", () => {
     const result = compile('"hello, world"');
-    expect(result.toString()).toBe("hello, world");
+    expect(result.toString()).toBe('"hello, world"');
   });
 
-  test("triple quotes preserve inner quotes", () => {
+  test("triple quotes at top level are literal text", () => {
     const result = compile('"""hello "world" end"""');
-    expect(result.toString()).toBe('hello "world" end');
+    expect(result.toString()).toBe('"""hello "world" end"""');
   });
 
-  test("empty string literal", () => {
+  test("empty quotes at top level are literal text", () => {
     const result = compile('""');
-    expect(result.toString()).toBe("");
+    expect(result.toString()).toBe('""');
   });
 
   test("string literal inside function parameter", () => {

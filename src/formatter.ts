@@ -81,11 +81,20 @@ const printMixedText = (node: MixedText, ctx: PrintContext): string => {
 };
 
 const needsQuoting = (text: string): boolean => {
-  return /[,=\[\]{}"]/.test(text) || text.includes("\n");
+  return /[,=\[\]{}"\\]/.test(text) || text.includes("\n");
 };
 
 const needsQuotingTopLevel = (text: string): boolean => {
   return /[a-zA-Z][a-zA-Z0-9_]*\s*\{/.test(text) || /[{}]/.test(text);
+};
+
+const maxConsecutiveQuotes = (text: string): number => {
+  let max = 0, cur = 0;
+  for (const ch of text) {
+    if (ch === '"') { cur++; if (cur > max) max = cur; }
+    else cur = 0;
+  }
+  return max;
 };
 
 const quoteString = (text: string): string => {
@@ -99,9 +108,23 @@ const quoteString = (text: string): string => {
     const suffix = text.endsWith("\n") ? "" : "\n";
     return `${quotes}${prefix}${text}${suffix}${quotes}`;
   }
-  // Single-line: use double quotes with \" escaping
-  const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-  return `"${escaped}"`;
+  const maxQ = maxConsecutiveQuotes(text);
+  if (maxQ === 0) {
+    return `"${text}"`;  // no quotes in content, single-wrap
+  }
+  if (text.endsWith('"')) {
+    // Trailing " would be stolen by closing delimiter in N+1 quoting,
+    // so fall back to single-wrap with \" escaping (simpler output).
+    const escaped = text.replace(/"/g, '\\"');
+    return `"${escaped}"`;
+  }
+  // N+1 quoting: wrap with one more quote than the longest run
+  const quotes = '"'.repeat(maxQ + 1);
+  return `${quotes}${text}${quotes}`;
+};
+
+const escapeInFunction = (text: string): string => {
+  return text.replace(/([\\{}\[\],="])/g, "\\$1");
 };
 
 const escapeTopLevel = (text: string): string => {
@@ -119,7 +142,7 @@ const printPureText = (node: PureText, ctx: PrintContext): string => {
     const parts: string[] = [];
     for (const shard of node.shards as (string | PureText)[]) {
       if (typeof shard === "string") {
-        parts.push(shard);
+        parts.push(escapeInFunction(shard));
       } else {
         const text = shard.shards.join("");
         if (needsQuoting(text)) {

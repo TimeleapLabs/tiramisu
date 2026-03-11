@@ -100,10 +100,19 @@ describe("formatter", () => {
       );
     });
 
-    test("text with quotes uses escaped quotes", () => {
+    test("text with quotes ending in quote uses single-wrap escaping", () => {
       expect(format('func { "say \\"hello\\"" }')).toBe(
         'func { "say \\"hello\\"" }\n'
       );
+    });
+
+    test("double backslash before quote is preserved", () => {
+      // \\" in source = two backslashes + quote delimiter
+      // After visitor unescape: \\ stays as \\, " is literal
+      const input = 'func { "text with \\\\\\"quotes\\\\\\" inside" }';
+      const once = format(input);
+      const twice = format(once);
+      expect(once).toBe(twice);
     });
 
     test("multiline string uses triple quotes", () => {
@@ -118,6 +127,17 @@ describe("formatter", () => {
       // Should NOT be inline since content contains newlines
       expect(result).toContain("code {\n");
     });
+
+    test("backslashes in strings are not doubled", () => {
+      expect(format('func { "\\\\," }')).toBe('func { "\\\\," }\n');
+    });
+
+    test("backslashes in strings are idempotent", () => {
+      const input = 'func { "\\\\\\\\," }';
+      const once = format(input);
+      const twice = format(once);
+      expect(once).toBe(twice);
+    });
   });
 
   describe("top-level escaping", () => {
@@ -125,6 +145,22 @@ describe("formatter", () => {
       // Source: "not\{ a function" compiles to text "not{ a function"
       // Formatter must re-emit: "not\{ a function" to prevent parsing "not" as function
       expect(format("not\\{ a function")).toBe("not\\{ a function\n");
+    });
+  });
+
+  describe("escaped function names", () => {
+    test("escaped function inside function is preserved", () => {
+      const input = "doc { \\bold { this is literal text } }";
+      const result = format(input);
+      // Should escape braces so \bold is not parsed as a function call
+      expect(result).toBe("doc { bold \\{ this is literal text \\} }\n");
+    });
+
+    test("escaped function inside function is idempotent", () => {
+      const input = "doc { \\bold { this is literal text } }";
+      const once = format(input);
+      const twice = format(once);
+      expect(once).toBe(twice);
     });
   });
 
