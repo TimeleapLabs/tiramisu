@@ -1,0 +1,41 @@
+name: Release VS Code Extension
+
+on:
+  push:
+    tags:
+      - "vscode-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build tiramisu package
+        run: npm install && npm run build
+
+      - name: Build extension
+        working-directory: vscode-tiramisu
+        run: npm install && npm run build
+
+      - name: Package VSIX
+        working-directory: vscode-tiramisu
+        run: npx @vscode/vsce package --no-dependencies
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#vscode-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: VS Code Extension v${{ steps.version.outputs.version }}
+          files: vscode-tiramisu/*.vsix
+          generate_release_notes: true

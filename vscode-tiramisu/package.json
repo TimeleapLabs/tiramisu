@@ -1,17 +1,22 @@
 {
   "name": "vscode-tiramisu",
-  "displayName": "vscode-tiramisu",
-  "description": "Tiramisu for VSCode",
-  "version": "0.0.1",
+  "displayName": "Tiramisu",
+  "description": "Tiramisu language support for VS Code",
+  "version": "0.1.0",
   "engines": {
-    "vscode": "^1.43.0"
+    "vscode": "^1.75.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/TimeleapLabs/tiramisu"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Formatters"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:tiramisu"
   ],
   "contributes": {
     "languages": [
@@ -34,6 +39,18 @@
         "path": "./syntaxes/tiramisu.tmLanguage.json"
       }
     ]
+  },
+  "scripts": {
+    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
+    "watch": "npm run build -- --watch",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "@timeleap/tiramisu": "file:.."
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "esbuild": "^0.20.0"
   },
   "license": "Apache-2.0"
 }

@@ -16,10 +16,10 @@
           "include": "#escape"
         },
         {
-          "include": "#code-blocks"
+          "include": "#mermaid-blocks"
         },
         {
-          "include": "#mermaid-blocks"
+          "include": "#escaped-function"
         },
         {
           "include": "#bold"
@@ -39,7 +39,11 @@
       ]
     },
     "backslash-escape": {
-      "match": "\\\\[\\\\{}\\[\\],=]",
+      "match": "\\\\[\\\\{}\\[\\],=\"]",
+      "name": "constant.character.escape.tiramisu"
+    },
+    "escaped-function": {
+      "match": "\\\\([a-zA-Z]\\w*)",
       "name": "constant.character.escape.tiramisu"
     },
     "link": {
@@ -60,7 +64,7 @@
     "functions": {
       "patterns": [
         {
-          "begin": "(\\w+)\\s*\\{",
+          "begin": "([a-zA-Z]\\w*)\\s*\\{",
           "end": "\\}",
           "captures": {
             "1": {
@@ -110,193 +114,6 @@
               "include": "source.mermaid"
             }
           ]
-        }
-      ]
-    },
-    "code-blocks": {
-      "begin": "(code)\\s*\\{",
-      "end": "\\}",
-      "captures": {
-        "1": {
-          "name": "entity.name.function.tiramisu"
-        }
-      },
-      "patterns": [
-        { "include": "#highlight-js" },
-        { "include": "#highlight-ts" },
-        { "include": "#highlight-go" },
-        { "include": "#highlight-bash" },
-        { "include": "#highlight-python" },
-        { "include": "#highlight-solidity" },
-        { "include": "#highlight-tiramisu" },
-        { "include": "#parameters" }
-      ]
-    },
-    "highlight-js": {
-      "begin": "(language)\\s*=\\s*(javascript|js)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.js"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
-        }
-      ]
-    },
-    "highlight-ts": {
-      "begin": "(language)\\s*=\\s*(typescript|ts)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.ts"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
-        }
-      ]
-    },
-    "highlight-bash": {
-      "begin": "(language)\\s*=\\s*(bash)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.shell"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
-        }
-      ]
-    },
-    "highlight-go": {
-      "begin": "(language)\\s*=\\s*(golang|go)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.go"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
-        }
-      ]
-    },
-    "highlight-python": {
-      "begin": "(language)\\s*=\\s*(python|py)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.python"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
-        }
-      ]
-    },
-    "highlight-solidity": {
-      "begin": "(language)\\s*=\\s*(solidity|sol)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.solidity"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
-        }
-      ]
-    },
-    "highlight-tiramisu": {
-      "begin": "(language)\\s*=\\s*(tiramisu)",
-      "end": "(?=\\})",
-      "captures": {
-        "1": {
-          "name": "variable.parameter.language.tiramisu"
-        },
-        "2": {
-          "name": "string.unquoted.language.tiramisu"
-        }
-      },
-      "patterns": [
-        {
-          "begin": "(\"{1,})",
-          "end": "\\1",
-          "patterns": [
-            {
-              "include": "source.tiramisu"
-            }
-          ],
-          "name": "markup.inserted.tiramisu"
         }
       ]
     },
