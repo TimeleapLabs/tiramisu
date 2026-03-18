@@ -13,7 +13,8 @@
       "types": "./dist/types/nodes.d.ts",
       "default": "./dist/types/nodes.js"
     },
-    "./vscode-tiramisu/syntaxes/tiramisu.tmLanguage.json": "./vscode-tiramisu/syntaxes/tiramisu.tmLanguage.json"
+    "./vscode-tiramisu/syntaxes/tiramisu.tmLanguage.json": "./vscode-tiramisu/syntaxes/tiramisu.tmLanguage.json",
+    "./dist/*": "./dist/*"
   },
   "scripts": {
     "test": "bun test",
